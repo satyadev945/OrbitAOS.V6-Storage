@@ -1,0 +1,55 @@
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to OrbitAOS</h1>
+    <p class="lead">
+        A modern ASP.NET Core MVC application built on .NET 8 with Clean Architecture.
+    </p>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Clean Architecture</h5>
+                <p class="card-text">
+                    Built with Domain, Application, Infrastructure, and Web layers following
+                    Clean Architecture principles for maintainability and testability.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Entity Framework Core 8</h5>
+                <p class="card-text">
+                    Data access powered by EF Core 8 with SQL Server, repository pattern,
+                    and unit of work for transactional consistency.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">ASP.NET Core Identity</h5>
+                <p class="card-text">
+                    Secure authentication and authorization using ASP.NET Core Identity 8
+                    with cookie-based authentication and role management.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4 text-center">
+    <a asp-controller="Sample" asp-action="Index" class="btn btn-primary btn-lg">
+        View Samples
+    </a>
+    <a href="https://docs.microsoft.com/aspnet/core" class="btn btn-outline-secondary btn-lg ms-2" target="_blank">
+        Learn ASP.NET Core
+    </a>
+</div>

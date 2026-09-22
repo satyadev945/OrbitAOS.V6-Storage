@@ -1,0 +1,89 @@
+/* OrbitAOS - Site-wide CSS
+ * Migrated from legacy ASP.NET MVC Content/Site.css to ASP.NET Core wwwroot/css/site.css
+ * Compatible with Bootstrap 5 (replaces Bootstrap 3 from legacy MVC templates)
+ */
+
+/* ── Layout ─────────────────────────────────────────────────────────────────── */
+html {
+    font-size: 14px;
+    position: relative;
+    min-height: 100%;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+/* ── Footer ─────────────────────────────────────────────────────────────────── */
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px;
+}
+
+/* ── Navigation ─────────────────────────────────────────────────────────────── */
+.navbar-brand strong {
+    letter-spacing: 0.05em;
+}
+
+/* ── Cards ──────────────────────────────────────────────────────────────────── */
+.card {
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+/* ── Tables ─────────────────────────────────────────────────────────────────── */
+.table th {
+    font-weight: 600;
+}
+
+/* ── Buttons ─────────────────────────────────────────────────────────────────── */
+.btn {
+    border-radius: 0.375rem;
+}
+
+/* ── Alerts ─────────────────────────────────────────────────────────────────── */
+.alert {
+    border-radius: 0.375rem;
+}
+
+/* ── Form controls ───────────────────────────────────────────────────────────── */
+.form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* ── Validation ──────────────────────────────────────────────────────────────── */
+.field-validation-error {
+    color: #dc3545;
+    font-size: 0.875em;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error,
+select.input-validation-error,
+textarea.input-validation-error {
+    border-color: #dc3545;
+}
+
+.validation-summary-errors {
+    color: #dc3545;
+}
+
+.validation-summary-valid {
+    display: none;
+}

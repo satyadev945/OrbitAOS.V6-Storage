@@ -1,0 +1,97 @@
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to OrbitAOS</h1>
+    <p class="lead">
+        This application has been migrated to
+        <a href="https://docs.microsoft.com/aspnet/core" target="_blank" rel="noopener">ASP.NET Core MVC on .NET 8</a>
+        using Clean Architecture.
+    </p>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-3">
+        <div class="card h-100 shadow-sm">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0">Domain Layer</h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">Contains domain entities, interfaces, and business rules with no external dependencies.</p>
+                <ul class="list-unstyled">
+                    <li><span class="badge bg-secondary me-1">Entity</span> BaseEntity</li>
+                    <li><span class="badge bg-secondary me-1">Entity</span> UserProfile</li>
+                    <li><span class="badge bg-secondary me-1">Interface</span> IRepository&lt;T&gt;</li>
+                    <li><span class="badge bg-secondary me-1">Interface</span> IUserProfileRepository</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card h-100 shadow-sm">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">Application Layer</h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">Contains business logic, DTOs, and service interfaces.</p>
+                <ul class="list-unstyled">
+                    <li><span class="badge bg-success me-1">DTO</span> UserProfileDto</li>
+                    <li><span class="badge bg-success me-1">Interface</span> IUserProfileService</li>
+                    <li><span class="badge bg-success me-1">Service</span> UserProfileService</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card h-100 shadow-sm">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">Infrastructure Layer</h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">Contains EF Core 8 data access, Identity, and repository implementations.</p>
+                <ul class="list-unstyled">
+                    <li><span class="badge bg-info me-1">DbContext</span> ApplicationDbContext</li>
+                    <li><span class="badge bg-info me-1">Repo</span> Repository&lt;T&gt;</li>
+                    <li><span class="badge bg-info me-1">Repo</span> UserProfileRepository</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card h-100 shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Web Layer</h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">ASP.NET Core MVC presentation layer with controllers, views, and Identity UI.</p>
+                <ul class="list-unstyled">
+                    <li><span class="badge bg-primary me-1">Controller</span> HomeController</li>
+                    <li><span class="badge bg-primary me-1">Controller</span> UserProfileController</li>
+                    <li><span class="badge bg-primary me-1">Identity</span> ASP.NET Core Identity</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark text-white">
+                <h5 class="mb-0">Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <a asp-controller="UserProfile" asp-action="Index" class="btn btn-outline-primary me-2">
+                    View User Profiles
+                </a>
+                <a asp-controller="UserProfile" asp-action="Create" class="btn btn-outline-success me-2">
+                    Create User Profile
+                </a>
+                <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-outline-secondary me-2">
+                    Register
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

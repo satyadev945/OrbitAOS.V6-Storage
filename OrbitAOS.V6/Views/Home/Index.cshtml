@@ -1,9 +1,24 @@
-﻿@{
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Welcome to OrbitAOS</h1>
+    <p>Built with <strong>ASP.NET Core MVC on .NET 8</strong> using Clean Architecture.</p>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core" target="_blank" rel="noopener">building Web apps with ASP.NET Core</a>.</p>
 </div>
 
+<div class="row mt-4">
+    <div class="col-md-4">
+        <h2>Domain Layer</h2>
+        <p>Contains enterprise business rules, entities, and repository interfaces.</p>
+    </div>
+    <div class="col-md-4">
+        <h2>Application Layer</h2>
+        <p>Contains application business rules, service interfaces, and DTOs.</p>
+    </div>
+    <div class="col-md-4">
+        <h2>Infrastructure Layer</h2>
+        <p>Contains EF Core DbContext, repository implementations, and external service adapters.</p>
+    </div>
+</div>

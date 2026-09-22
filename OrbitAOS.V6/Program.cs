@@ -1,22 +1,46 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using OrbitAOS.V6.Data;
+using OrbitAOS.Application.Interfaces;
+using OrbitAOS.Application.Services;
+using OrbitAOS.Domain.Interfaces;
+using OrbitAOS.Infrastructure.Data;
+using OrbitAOS.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+// ── Data Layer ───────────────────────────────────────────────────────────────
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+// ── Identity ─────────────────────────────────────────────────────────────────
+builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+    {
+        options.SignIn.RequireConfirmedAccount = true;
+    })
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+// ── MVC ──────────────────────────────────────────────────────────────────────
 builder.Services.AddControllersWithViews();
+
+// ── Clean Architecture: Repositories ─────────────────────────────────────────
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped<IUserProfileRepository, UserProfileRepository>();
+
+// ── Clean Architecture: Application Services ─────────────────────────────────
+builder.Services.AddScoped<IUserProfileService, UserProfileService>();
+
+// ── Logging ──────────────────────────────────────────────────────────────────
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// ── HTTP Pipeline ─────────────────────────────────────────────────────────────
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
@@ -24,7 +48,7 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    // HSTS: 30-day default. Adjust for production as needed.
     app.UseHsts();
 }
 
@@ -36,9 +60,11 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+// ── Routing ───────────────────────────────────────────────────────────────────
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
 app.MapRazorPages();
 
 app.Run();

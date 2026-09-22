@@ -1,0 +1,12 @@
+namespace OrbitAOS.V6.Models.Entities
+{
+    /// <summary>
+    /// Base class for all domain entities providing common audit fields.
+    /// </summary>
+    public abstract class BaseEntity
+    {
+        public int Id { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime? UpdatedAt { get; set; }
+    }
+}

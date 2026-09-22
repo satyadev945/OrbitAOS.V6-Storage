@@ -1,9 +1,39 @@
-﻿@{
+@{
     ViewData["Title"] = "Home Page";
+    var welcomeMessage = ViewData["WelcomeMessage"] as string ?? "Welcome to OrbitAOS";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">@welcomeMessage</h1>
+    <p>
+        Learn about
+        <a href="https://docs.microsoft.com/aspnet/core" target="_blank" rel="noopener">
+            building Web apps with ASP.NET Core on .NET 8
+        </a>.
+    </p>
 </div>
 
+<div class="row mt-4">
+    <div class="col-md-4">
+        <h2>Migration Complete</h2>
+        <p>
+            This application has been migrated from ASP.NET MVC to
+            <strong>ASP.NET Core MVC on .NET 8</strong> using Clean Architecture.
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2>Clean Architecture</h2>
+        <p>
+            The codebase is organized into <strong>Domain</strong>,
+            <strong>Application</strong>, <strong>Infrastructure</strong>,
+            and <strong>Web</strong> layers.
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2>EF Core 8</h2>
+        <p>
+            Data access uses <strong>Entity Framework Core 8</strong>
+            with the repository pattern, replacing legacy EF6 / ADO.NET.
+        </p>
+    </div>
+</div>

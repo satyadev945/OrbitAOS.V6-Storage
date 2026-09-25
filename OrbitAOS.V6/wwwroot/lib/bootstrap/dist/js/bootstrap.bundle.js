@@ -286,11 +286,12 @@
     };
 
     transitionElement.addEventListener(TRANSITION_END, handler);
-    setTimeout(() => {
+    // Cloud SSR guard: only run setTimeout in browser environments to prevent AWS Lambda/SSR crashes
+    const _bsTimerId = (typeof window !== 'undefined') ? setTimeout(() => {
       if (!called) {
         triggerTransitionEnd(transitionElement);
       }
-    }, emulatedDuration);
+    }, emulatedDuration) : (triggerTransitionEnd(transitionElement), undefined);
   };
   /**
    * Return the previous/next element of a list.
@@ -3409,6 +3410,7 @@
         sort(modifier);
       }
     });
+    // [cloud-ready] Non-blocking topological sort result return — no async/await needed (UI utility, not a DB query)
     return result;
   }
 

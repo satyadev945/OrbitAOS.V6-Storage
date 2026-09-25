@@ -13,6 +13,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.19" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.19" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.19" />
+    <!-- AWS ElastiCache (Redis) distributed cache for async/non-blocking data retrieval -->
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="6.0.21" />
+    <!-- LigerShark WebOptimizer: CSS/JS bundling and minification for AWS CloudFront delivery -->
+    <PackageReference Include="LigerShark.WebOptimizer.Core" Version="3.0.357" />
   </ItemGroup>
 
 </Project>

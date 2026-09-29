@@ -27,6 +27,16 @@ namespace OrbitAOS.Infrastructure.Data
         {
             base.OnModelCreating(builder);
 
+            // Set default schema to public for PostgreSQL
+            builder.HasDefaultSchema("public");
+
+            // Configure PostgreSQL extensions
+            builder.HasPostgresExtension("uuid-ossp");
+
+            // Configure migrations history table with snake_case naming
+            builder.HasAnnotation("Npgsql:ValueGenerationStrategy",
+                Npgsql.EntityFrameworkCore.PostgreSQL.Metadata.NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
             // Configure UserProfile entity
             builder.Entity<UserProfile>(entity =>
             {

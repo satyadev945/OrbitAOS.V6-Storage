@@ -1,9 +1,46 @@
-﻿@{
+@* ============================================================
+   Views/Home/Index.cshtml
+   Home page view - updated for .NET 8 ASP.NET Core MVC.
+   
+   Migration notes:
+   - ViewData["WelcomeMessage"] populated by HomeController
+   - Tag Helpers used instead of legacy Html.ActionLink()
+   - Documentation link updated to learn.microsoft.com (.NET 8 docs)
+   ============================================================ *@
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">@(ViewData["WelcomeMessage"] ?? "Welcome")</h1>
+    <p>
+        Learn about
+        <a href="https://learn.microsoft.com/aspnet/core" target="_blank" rel="noopener noreferrer">
+            building Web apps with ASP.NET Core on .NET 8
+        </a>.
+    </p>
 </div>
 
+<div class="row mt-4">
+    <div class="col-md-4">
+        <h2>Migration Complete</h2>
+        <p>
+            This application has been migrated from ASP.NET MVC 6.0 (net6.0)
+            to ASP.NET Core MVC on <strong>.NET 8</strong> with Clean Architecture.
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2>Clean Architecture</h2>
+        <p>
+            The codebase now follows a layered structure:
+            <strong>Domain → Infrastructure → Application → Web</strong>.
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2>EF Core 8</h2>
+        <p>
+            Data access uses <strong>Entity Framework Core 8.0</strong>
+            with the Repository and Unit of Work patterns.
+        </p>
+    </div>
+</div>

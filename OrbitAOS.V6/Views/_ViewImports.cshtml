@@ -1,3 +1,14 @@
-﻿@using OrbitAOS.V6
+@* ============================================================
+   Views/_ViewImports.cshtml
+   Global Razor directives - applies to all views.
+   .NET 8 update: Added ViewModels namespace import.
+   
+   Migration notes:
+   - @addTagHelper replaces legacy HTML helpers where possible
+   - Tag Helpers are the .NET 8 preferred approach over HtmlHelper
+   - @using directives replace per-view @using statements
+   ============================================================ *@
+@using OrbitAOS.V6
 @using OrbitAOS.V6.Models
+@using OrbitAOS.V6.Models.ViewModels
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers

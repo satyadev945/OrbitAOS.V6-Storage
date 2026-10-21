@@ -44,6 +44,24 @@ public class HomeControllerTests
     }
 
     // ------------------------------------------------------------------
+    // Constructor
+    // ------------------------------------------------------------------
+
+    [Fact]
+    public void Constructor_WithValidDependencies_CreatesInstance()
+    {
+        // Arrange
+        var logger = new Mock<ILogger<HomeController>>();
+        var service = new Mock<IHomeService>();
+
+        // Act
+        var controller = new HomeController(logger.Object, service.Object);
+
+        // Assert
+        controller.Should().NotBeNull();
+    }
+
+    // ------------------------------------------------------------------
     // Index
     // ------------------------------------------------------------------
 
@@ -95,6 +113,72 @@ public class HomeControllerTests
             Times.Once);
     }
 
+    [Fact]
+    public async Task Index_WithEmptyMessage_SetsEmptyViewData()
+    {
+        // Arrange
+        _homeServiceMock
+            .Setup(s => s.GetWelcomeMessageAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(string.Empty);
+
+        // Act
+        await _sut.Index(CancellationToken.None);
+
+        // Assert
+        _sut.ViewData["WelcomeMessage"].Should().Be(string.Empty);
+    }
+
+    [Fact]
+    public async Task Index_WithCancellationToken_PassesTokenToService()
+    {
+        // Arrange
+        using var cts = new CancellationTokenSource();
+        var token = cts.Token;
+
+        _homeServiceMock
+            .Setup(s => s.GetWelcomeMessageAsync(token))
+            .ReturnsAsync("Cancelled test");
+
+        // Act
+        await _sut.Index(token);
+
+        // Assert
+        _homeServiceMock.Verify(
+            s => s.GetWelcomeMessageAsync(token),
+            Times.Once);
+    }
+
+    [Fact]
+    public async Task Index_ViewResult_HasNullModel()
+    {
+        // Arrange
+        _homeServiceMock
+            .Setup(s => s.GetWelcomeMessageAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync("Hello");
+
+        // Act
+        var result = await _sut.Index(CancellationToken.None) as ViewResult;
+
+        // Assert
+        result!.Model.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task Index_WithLongMessage_SetsFullMessageInViewData()
+    {
+        // Arrange
+        var longMessage = new string('A', 1000);
+        _homeServiceMock
+            .Setup(s => s.GetWelcomeMessageAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(longMessage);
+
+        // Act
+        await _sut.Index(CancellationToken.None);
+
+        // Assert
+        _sut.ViewData["WelcomeMessage"].Should().Be(longMessage);
+    }
+
     // ------------------------------------------------------------------
     // Privacy
     // ------------------------------------------------------------------
@@ -107,6 +191,28 @@ public class HomeControllerTests
 
         // Assert
         result.Should().BeOfType<ViewResult>();
+    }
+
+    [Fact]
+    public void Privacy_ViewResult_HasNullModel()
+    {
+        // Act
+        var result = _sut.Privacy() as ViewResult;
+
+        // Assert
+        result!.Model.Should().BeNull();
+    }
+
+    [Fact]
+    public void Privacy_DoesNotCallHomeService()
+    {
+        // Act
+        _sut.Privacy();
+
+        // Assert
+        _homeServiceMock.Verify(
+            s => s.GetWelcomeMessageAsync(It.IsAny<CancellationToken>()),
+            Times.Never);
     }
 
     // ------------------------------------------------------------------
@@ -135,5 +241,41 @@ public class HomeControllerTests
         model.Should().NotBeNull();
         // TraceIdentifier is set by DefaultHttpContext – just verify it is not null
         model!.RequestId.Should().NotBeNull();
+    }
+
+    [Fact]
+    public void Error_ModelIsNotNull()
+    {
+        // Act
+        var result = _sut.Error() as ViewResult;
+
+        // Assert
+        result!.Model.Should().NotBeNull();
+    }
+
+    [Fact]
+    public void Error_DoesNotCallHomeService()
+    {
+        // Act
+        _sut.Error();
+
+        // Assert
+        _homeServiceMock.Verify(
+            s => s.GetWelcomeMessageAsync(It.IsAny<CancellationToken>()),
+            Times.Never);
+    }
+
+    [Fact]
+    public void Error_ErrorViewModel_ShowRequestId_WhenRequestIdSet()
+    {
+        // Act
+        var result = _sut.Error() as ViewResult;
+        var model = result!.Model as ErrorViewModel;
+
+        // Assert – DefaultHttpContext provides a non-empty TraceIdentifier
+        if (!string.IsNullOrEmpty(model!.RequestId))
+        {
+            model.ShowRequestId.Should().BeTrue();
+        }
     }
 }

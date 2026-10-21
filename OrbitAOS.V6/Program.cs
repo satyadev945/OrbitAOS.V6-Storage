@@ -12,6 +12,7 @@ using OrbitAOS.V6.Infrastructure.Identity;
 using OrbitAOS.V6.Application.Interfaces;
 using OrbitAOS.V6.Application.Services;
 using OrbitAOS.V6.Infrastructure.Repositories;
+using OrbitAOS.V6.Web.Filters;
 using OrbitAOS.V6.Web.Middleware;
 using Serilog;
 
@@ -115,7 +116,7 @@ try
     builder.Services.AddControllersWithViews(options =>
     {
         // Global exception filter (replaces FilterConfig.cs)
-        options.Filters.Add<Web.Filters.GlobalExceptionFilter>();
+        options.Filters.Add<GlobalExceptionFilter>();
     });
 
     // ── Razor Pages (for Identity UI scaffolded pages) ───────────────────────

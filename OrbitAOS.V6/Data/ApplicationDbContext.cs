@@ -1,17 +1,13 @@
 // ============================================================
 // Data/ApplicationDbContext.cs
-// MIGRATION NOTE: This file is superseded by
-//   Infrastructure/Data/ApplicationDbContext.cs
-// in the Clean Architecture layout.
+// MIGRATION NOTE: This file is a compatibility alias so that
+//   existing EF Core migration files (Data/Migrations/) continue
+//   to compile without modification during the transition.
 //
-// This stub re-exports the Infrastructure DbContext so that
-// existing EF Core migration files (Data/Migrations/) continue
-// to compile without modification during the transition.
+// The canonical DbContext is Infrastructure/Data/ApplicationDbContext.cs
 // ============================================================
 
-// Re-export the Infrastructure DbContext under the legacy namespace
-// so existing migration files referencing OrbitAOS.V6.Data.ApplicationDbContext
-// continue to compile.
+using Microsoft.EntityFrameworkCore;
 
 namespace OrbitAOS.V6.Data;
 
@@ -21,8 +17,7 @@ namespace OrbitAOS.V6.Data;
 /// </summary>
 public class ApplicationDbContext : OrbitAOS.V6.Infrastructure.Data.ApplicationDbContext
 {
-    public ApplicationDbContext(
-        Microsoft.EntityFrameworkCore.DbContextOptions<OrbitAOS.V6.Infrastructure.Data.ApplicationDbContext> options)
+    public ApplicationDbContext(DbContextOptions<OrbitAOS.V6.Infrastructure.Data.ApplicationDbContext> options)
         : base(options)
     {
     }

@@ -10,6 +10,8 @@
     <AssemblyName>OrbitAOS.V6</AssemblyName>
     <!-- Enable runtime Razor view compilation for development hot-reload -->
     <RazorCompileOnBuild>true</RazorCompileOnBuild>
+    <!-- Exclude test files from the main web project build -->
+    <DefaultItemExcludes>$(DefaultItemExcludes);Tests/**</DefaultItemExcludes>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,9 +31,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
 
-    <!-- Session state support (ASP.NET Core built-in) -->
-    <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
-
     <!-- Logging: Serilog for structured logging (replaces basic ILogger wiring) -->
     <PackageReference Include="Serilog.AspNetCore" Version="8.0.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
@@ -39,12 +38,6 @@
 
     <!-- Health checks -->
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="8.0.0" />
-
-    <!-- Optional: Newtonsoft.Json compatibility shim if needed -->
-    <!-- <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.0" /> -->
-
-    <!-- Optional: Runtime Razor view compilation (development hot-reload) -->
-    <!-- <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.0" /> -->
   </ItemGroup>
 
 </Project>

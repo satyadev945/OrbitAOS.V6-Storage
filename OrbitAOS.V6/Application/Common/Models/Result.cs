@@ -1,17 +1,17 @@
 // =============================================================================
 // Application/Common/Models/Result.cs
-// Clean Architecture: Application Layer - Result Pattern
+// MVC-Only Architecture: Result Pattern
 //
 // Migration Notes:
-//   - Provides a consistent return type for Application layer operations
+//   - Provides a consistent return type for service layer operations
 //   - Replaces exception-driven error handling in legacy controllers
-//   - Enables clean error propagation from Application to Web layer
+//   - Enables clean error propagation from services to controllers
 // =============================================================================
 
 namespace OrbitAOS.V6.Application.Common.Models
 {
     /// <summary>
-    /// Represents the result of an Application layer operation.
+    /// Represents the result of a service layer operation.
     /// Encapsulates success/failure state and associated data or errors.
     /// </summary>
     public class Result
@@ -20,7 +20,7 @@ namespace OrbitAOS.V6.Application.Common.Models
         public bool Succeeded { get; private set; }
 
         /// <summary>Collection of error messages if the operation failed.</summary>
-        public IEnumerable<string> Errors { get; private set; }
+        public IEnumerable<string> Errors { get; private set; } = Array.Empty<string>();
 
         /// <summary>Creates a successful result.</summary>
         public static Result Success() => new Result { Succeeded = true, Errors = Array.Empty<string>() };
@@ -35,7 +35,7 @@ namespace OrbitAOS.V6.Application.Common.Models
     }
 
     /// <summary>
-    /// Represents the result of an Application layer operation with a return value.
+    /// Represents the result of a service layer operation with a return value.
     /// </summary>
     /// <typeparam name="T">The type of the result value.</typeparam>
     public class Result<T>

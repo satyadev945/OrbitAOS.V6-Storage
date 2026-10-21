@@ -1,32 +1,38 @@
 // =============================================================================
 // Program.cs - ASP.NET Core MVC .NET 7 Entry Point
-// Clean Architecture: Web Layer (Presentation)
+// MVC-Only Architecture (Single Project)
 //
 // Migration Notes:
 //   - Upgraded from net6.0 to net7.0
-//   - Implements Clean Architecture service registration
 //   - Replaces legacy Global.asax, App_Start/RouteConfig.cs,
 //     App_Start/FilterConfig.cs, App_Start/BundleConfig.cs
 //   - Uses ASP.NET Core Identity (replaces Forms Authentication)
 //   - Configures EF Core 7 (replaces EF6)
-//   - Adds AutoMapper, FluentValidation, MediatR for Clean Architecture
+//   - Adds AutoMapper, FluentValidation, MediatR
 // =============================================================================
 
-using FluentValidation.AspNetCore;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using OrbitAOS.V6.Data;
-using OrbitAOS.V6.Infrastructure.Persistence;
-using OrbitAOS.V6.Application;
 using OrbitAOS.V6.Domain.Interfaces;
+using OrbitAOS.V6.Filters;
+using OrbitAOS.V6.Infrastructure.Persistence;
 using OrbitAOS.V6.Infrastructure.Repositories;
 using OrbitAOS.V6.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // -------------------------------------------------------------------------
-// 1. DATABASE & EF CORE 7 CONFIGURATION
+// 1. LOGGING (.NET 7)
+//    Migration: log4net/NLog → Microsoft.Extensions.Logging
+// -------------------------------------------------------------------------
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+
+// -------------------------------------------------------------------------
+// 2. DATABASE & EF CORE 7 CONFIGURATION
 //    Migration: web.config connectionStrings → appsettings.json
 //    Migration: EF6 DbContext → EF Core 7 DbContext
 // -------------------------------------------------------------------------
@@ -43,13 +49,20 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
             maxRetryDelay: TimeSpan.FromSeconds(30),
             errorNumbersToAdd: null);
     });
+
+    // Development-only: enable sensitive data logging for debugging
+    if (builder.Environment.IsDevelopment())
+    {
+        options.EnableSensitiveDataLogging();
+        options.EnableDetailedErrors();
+    }
 });
 
 // EF Core developer page exception filter (.NET 7)
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // -------------------------------------------------------------------------
-// 2. ASP.NET CORE IDENTITY CONFIGURATION
+// 3. ASP.NET CORE IDENTITY CONFIGURATION
 //    Migration: ASP.NET Identity 2.x → ASP.NET Core Identity on .NET 7
 //    Migration: Forms Authentication → Cookie Authentication
 // -------------------------------------------------------------------------
@@ -88,43 +101,40 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 // -------------------------------------------------------------------------
-// 3. MVC & RAZOR PAGES CONFIGURATION
+// 4. MVC & RAZOR PAGES CONFIGURATION
 //    Migration: System.Web.Mvc → Microsoft.AspNetCore.Mvc
 // -------------------------------------------------------------------------
 builder.Services.AddControllersWithViews(options =>
 {
-    // Global filters (replaces App_Start/FilterConfig.cs)
-    // options.Filters.Add<CustomAuthorizationFilter>();
-    // options.Filters.Add<CustomExceptionFilter>();
-})
-.AddFluentValidation(fv =>
-{
-    // FluentValidation: replaces DataAnnotations-only validation
-    fv.RegisterValidatorsFromAssemblyContaining<Program>();
-    fv.ImplicitlyValidateChildProperties = true;
+    // Global exception filter (replaces App_Start/FilterConfig.cs)
+    options.Filters.Add<GlobalExceptionFilter>();
 });
 
 builder.Services.AddRazorPages();
 
+// Register FluentValidation validators from the current assembly
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+
 // -------------------------------------------------------------------------
-// 4. CLEAN ARCHITECTURE - APPLICATION LAYER SERVICES
-//    MediatR for CQRS pattern
-//    AutoMapper for object mapping between layers
+// 5. MEDIATR FOR CQRS PATTERN
 // -------------------------------------------------------------------------
 builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
+// -------------------------------------------------------------------------
+// 6. AUTOMAPPER FOR OBJECT MAPPING
+// -------------------------------------------------------------------------
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 // -------------------------------------------------------------------------
-// 5. CLEAN ARCHITECTURE - INFRASTRUCTURE LAYER SERVICES
-//    Repository pattern (replaces direct DbContext usage in controllers)
+// 7. REPOSITORY & UNIT OF WORK PATTERN
+//    Replaces direct DbContext usage in controllers
 // -------------------------------------------------------------------------
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // -------------------------------------------------------------------------
-// 6. SESSION CONFIGURATION
+// 8. SESSION CONFIGURATION
 //    Migration: System.Web.SessionState → ASP.NET Core Session
 // -------------------------------------------------------------------------
 builder.Services.AddDistributedMemoryCache();
@@ -137,21 +147,13 @@ builder.Services.AddSession(options =>
 });
 
 // -------------------------------------------------------------------------
-// 7. RESPONSE CACHING
+// 9. RESPONSE CACHING
 //    Migration: [OutputCache] attribute → Response Caching middleware
 // -------------------------------------------------------------------------
 builder.Services.AddResponseCaching();
 
 // -------------------------------------------------------------------------
-// 8. LOGGING (.NET 7)
-//    Migration: log4net/NLog → Microsoft.Extensions.Logging
-// -------------------------------------------------------------------------
-builder.Logging.ClearProviders();
-builder.Logging.AddConsole();
-builder.Logging.AddDebug();
-
-// -------------------------------------------------------------------------
-// 9. HEALTH CHECKS (.NET 7 best practice)
+// 10. HEALTH CHECKS (.NET 7 best practice)
 // -------------------------------------------------------------------------
 builder.Services.AddHealthChecks()
     .AddDbContextCheck<ApplicationDbContext>();
@@ -162,7 +164,7 @@ builder.Services.AddHealthChecks()
 var app = builder.Build();
 
 // -------------------------------------------------------------------------
-// 10. HTTP REQUEST PIPELINE
+// 11. HTTP REQUEST PIPELINE
 //     Migration: Global.asax Application_Start → Program.cs middleware
 //     Migration: HTTP Modules → Middleware
 // -------------------------------------------------------------------------
@@ -178,6 +180,9 @@ else
     // HSTS: .NET 7 security best practice
     app.UseHsts();
 }
+
+// Custom exception handling middleware
+app.UseMiddleware<OrbitAOS.V6.Middleware.ExceptionHandlingMiddleware>();
 
 // HTTPS Redirection (replaces web.config HTTPS redirect rules)
 app.UseHttpsRedirection();
@@ -204,7 +209,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 // -------------------------------------------------------------------------
-// 11. ROUTE CONFIGURATION
+// 12. ROUTE CONFIGURATION
 //     Migration: App_Start/RouteConfig.cs → MapControllerRoute
 // -------------------------------------------------------------------------
 app.MapControllerRoute(

@@ -1,12 +1,12 @@
 // =============================================================================
 // Infrastructure/Persistence/ApplicationDbContext.cs
-// Clean Architecture: Infrastructure Layer - EF Core 7 DbContext
+// Clean Architecture: Infrastructure Layer - EF Core 8 DbContext
 //
 // Migration Notes:
-//   - Upgraded from EF Core 6 to EF Core 7
+//   - Upgraded from EF Core 7 to EF Core 8
 //   - Implements IApplicationDbContext interface (Clean Architecture)
 //   - Inherits IdentityDbContext for ASP.NET Core Identity support
-//   - Replaces legacy EF6 DbContext with EF Core 7 equivalent
+//   - Replaces legacy EF6 DbContext with EF Core 8 equivalent
 //   - Adds audit field auto-population (CreatedAt, UpdatedAt)
 //   - Supports soft-delete query filters
 // =============================================================================
@@ -20,7 +20,7 @@ using OrbitAOS.V6.Domain.Entities;
 namespace OrbitAOS.V6.Infrastructure.Persistence
 {
     /// <summary>
-    /// EF Core 7 application database context.
+    /// EF Core 8 application database context.
     /// Inherits from IdentityDbContext to support ASP.NET Core Identity.
     /// Implements IApplicationDbContext for Clean Architecture dependency inversion.
     /// </summary>

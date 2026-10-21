@@ -5,7 +5,7 @@
 // Migration Notes:
 //   - Implements IRepository<T> from the Domain layer
 //   - Replaces direct DbContext usage in legacy MVC controllers
-//   - Uses EF Core 7 async methods (FindAsync, ToListAsync, etc.)
+//   - Uses EF Core 8 async methods (FindAsync, ToListAsync, etc.)
 //   - Supports expression-based filtering
 // =============================================================================
 
@@ -17,7 +17,7 @@ using System.Linq.Expressions;
 namespace OrbitAOS.V6.Infrastructure.Repositories
 {
     /// <summary>
-    /// Generic repository implementation using EF Core 7.
+    /// Generic repository implementation using EF Core 8.
     /// Provides standard CRUD operations for any entity type.
     /// </summary>
     /// <typeparam name="T">The entity type (must be a class).</typeparam>

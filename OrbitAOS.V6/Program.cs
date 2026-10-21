@@ -1,13 +1,13 @@
 // =============================================================================
-// Program.cs - ASP.NET Core MVC .NET 7 Entry Point
+// Program.cs - ASP.NET Core MVC .NET 8 Entry Point
 // MVC-Only Architecture (Single Project)
 //
 // Migration Notes:
-//   - Upgraded from net6.0 to net7.0
+//   - Upgraded from net7.0 to net8.0
 //   - Replaces legacy Global.asax, App_Start/RouteConfig.cs,
 //     App_Start/FilterConfig.cs, App_Start/BundleConfig.cs
 //   - Uses ASP.NET Core Identity (replaces Forms Authentication)
-//   - Configures EF Core 7 (replaces EF6)
+//   - Configures EF Core 8 (replaces EF6)
 //   - Adds AutoMapper, FluentValidation, MediatR
 // =============================================================================
 
@@ -24,7 +24,7 @@ using OrbitAOS.V6.Infrastructure.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // -------------------------------------------------------------------------
-// 1. LOGGING (.NET 7)
+// 1. LOGGING (.NET 8)
 //    Migration: log4net/NLog → Microsoft.Extensions.Logging
 // -------------------------------------------------------------------------
 builder.Logging.ClearProviders();
@@ -32,9 +32,9 @@ builder.Logging.AddConsole();
 builder.Logging.AddDebug();
 
 // -------------------------------------------------------------------------
-// 2. DATABASE & EF CORE 7 CONFIGURATION
+// 2. DATABASE & EF CORE 8 CONFIGURATION
 //    Migration: web.config connectionStrings → appsettings.json
-//    Migration: EF6 DbContext → EF Core 7 DbContext
+//    Migration: EF6 DbContext → EF Core 8 DbContext
 // -------------------------------------------------------------------------
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
@@ -43,7 +43,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(connectionString, sqlOptions =>
     {
-        // .NET 7 EF Core: enable retry on transient failures
+        // .NET 8 EF Core: enable retry on transient failures
         sqlOptions.EnableRetryOnFailure(
             maxRetryCount: 5,
             maxRetryDelay: TimeSpan.FromSeconds(30),
@@ -58,12 +58,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     }
 });
 
-// EF Core developer page exception filter (.NET 7)
+// EF Core developer page exception filter (.NET 8)
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // -------------------------------------------------------------------------
 // 3. ASP.NET CORE IDENTITY CONFIGURATION
-//    Migration: ASP.NET Identity 2.x → ASP.NET Core Identity on .NET 7
+//    Migration: ASP.NET Identity 2.x → ASP.NET Core Identity on .NET 8
 //    Migration: Forms Authentication → Cookie Authentication
 // -------------------------------------------------------------------------
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
@@ -153,7 +153,7 @@ builder.Services.AddSession(options =>
 builder.Services.AddResponseCaching();
 
 // -------------------------------------------------------------------------
-// 10. HEALTH CHECKS (.NET 7 best practice)
+// 10. HEALTH CHECKS (.NET 8 best practice)
 // -------------------------------------------------------------------------
 builder.Services.AddHealthChecks()
     .AddDbContextCheck<ApplicationDbContext>();
@@ -177,7 +177,7 @@ else
 {
     // Migration: Application_Error in Global.asax → UseExceptionHandler
     app.UseExceptionHandler("/Home/Error");
-    // HSTS: .NET 7 security best practice
+    // HSTS: .NET 8 security best practice
     app.UseHsts();
 }
 

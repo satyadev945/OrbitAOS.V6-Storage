@@ -1,6 +1,6 @@
 // =============================================================================
 // Data/ApplicationDbContext.cs
-// Web Layer - EF Core 7 DbContext (backward-compatibility shim)
+// Web Layer - EF Core 8 DbContext (backward-compatibility shim)
 //
 // Migration Notes:
 //   - Provides a Data-namespace DbContext for backward compatibility

@@ -4,7 +4,7 @@
 //
 // Migration Notes:
 //   - Implements IUnitOfWork from the Domain layer
-//   - Wraps EF Core 7 DbContext transaction management
+//   - Wraps EF Core 8 DbContext transaction management
 //   - Replaces scattered SaveChanges() calls in legacy controllers
 //   - Supports explicit transaction control for complex operations
 // =============================================================================
@@ -17,7 +17,7 @@ using OrbitAOS.V6.Infrastructure.Persistence;
 namespace OrbitAOS.V6.Infrastructure.Services
 {
     /// <summary>
-    /// Unit of Work implementation using EF Core 7.
+    /// Unit of Work implementation using EF Core 8.
     /// Coordinates repository operations within a single database transaction.
     /// </summary>
     public class UnitOfWork : IUnitOfWork

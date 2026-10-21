@@ -1,13 +1,13 @@
 // =============================================================================
 // Data/Migrations/00000000000000_CreateIdentitySchema.cs
-// Infrastructure Layer - EF Core 7 Identity Schema Migration
+// Infrastructure Layer - EF Core 8 Identity Schema Migration
 //
 // Migration Notes:
-//   - Updated from EF Core 3.0 syntax to EF Core 7 syntax
+//   - Updated from EF Core 3.0 syntax to EF Core 8 syntax
 //   - Removed deprecated 'nullable' parameter (use type annotations instead)
 //   - Updated SqlServer:ValueGenerationStrategy annotation syntax
 //   - Removed HasMaxLength() in favor of HasMaxLength() on column type
-//   - EF Core 7: nullable columns use nullable reference types
+//   - EF Core 8: nullable columns use nullable reference types
 // =============================================================================
 
 using Microsoft.EntityFrameworkCore.Migrations;

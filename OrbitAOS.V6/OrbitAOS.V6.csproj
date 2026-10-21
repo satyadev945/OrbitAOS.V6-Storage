@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <!-- Upgraded from net6.0 to net7.0 for .NET 7 Core MVC migration -->
-    <TargetFramework>net7.0</TargetFramework>
+    <!-- Upgraded from net7.0 to net8.0 for .NET 8 Core MVC migration -->
+    <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-OrbitAOS.V6-afe03967-a771-44f8-b4ff-ee887e025b4f</UserSecretsId>
@@ -11,26 +11,26 @@
   </PropertyGroup>
 
   <!-- ============================================================
-       .NET 7 Compatible Package References
-       All packages upgraded from 6.0.x to 7.0.x
+       .NET 8 Compatible Package References
+       All packages upgraded from 7.0.x to 8.0.x
        ============================================================ -->
   <ItemGroup>
-    <!-- EF Core .NET 7 packages -->
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="7.0.20" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.20" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.20" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.20" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.20">
+    <!-- EF Core .NET 8 packages -->
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.10">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.20">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
 
     <!-- Logging -->
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
 
     <!-- AutoMapper for object mapping -->
     <PackageReference Include="AutoMapper" Version="12.0.1" />
@@ -43,7 +43,7 @@
     <PackageReference Include="MediatR" Version="12.2.0" />
 
     <!-- Health Checks with EF Core DbContext check -->
-    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="7.0.20" />
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="8.0.10" />
   </ItemGroup>
 
 </Project>

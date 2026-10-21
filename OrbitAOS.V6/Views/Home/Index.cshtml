@@ -1,9 +1,23 @@
-﻿@{
+@* ============================================================
+   Views/Home/Index.cshtml
+   Clean Architecture – Web / Presentation Layer
+   
+   Migration notes:
+     • Upgraded from net6.0 → net8.0
+     • WelcomeMessage now passed from HomeController via ViewData
+       (populated by IHomeService in the Application layer)
+     • Microsoft docs link updated to current .NET 8 URL
+   ============================================================ *@
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">@ViewData["WelcomeMessage"]</h1>
+    <p>
+        Learn about
+        <a href="https://learn.microsoft.com/aspnet/core" target="_blank" rel="noopener">
+            building Web apps with ASP.NET Core on .NET 8
+        </a>.
+    </p>
 </div>
-

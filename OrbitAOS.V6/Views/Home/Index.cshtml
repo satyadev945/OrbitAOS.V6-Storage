@@ -1,9 +1,25 @@
-﻿@{
+@*
+  Views/Home/Index.cshtml
+  Clean Architecture: Web Layer (Presentation) - Home Index View
+  
+  Migration Notes:
+    - Updated for ASP.NET Core MVC .NET 7
+    - ViewData["Title"] pattern (same as legacy MVC)
+    - Updated documentation link to .NET 7 docs
+    - Tag Helpers available via _ViewImports.cshtml
+*@
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Welcome to OrbitAOS</h1>
+    <p>
+        Learn about <a href="https://docs.microsoft.com/aspnet/core" target="_blank" rel="noopener">
+            building Web apps with ASP.NET Core .NET 7
+        </a>.
+    </p>
+    <p class="text-muted">
+        <small>Migrated from ASP.NET MVC 6.0 to ASP.NET Core MVC on .NET 7</small>
+    </p>
 </div>
-

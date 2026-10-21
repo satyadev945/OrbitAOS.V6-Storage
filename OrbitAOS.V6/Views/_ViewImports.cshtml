@@ -1,3 +1,14 @@
-﻿@using OrbitAOS.V6
+@*
+  Views/_ViewImports.cshtml
+  Clean Architecture: Web Layer (Presentation) - Global View Imports
+  
+  Migration Notes:
+    - Updated for ASP.NET Core MVC .NET 7
+    - @addTagHelper replaces legacy @using System.Web.Mvc.Html
+    - Tag Helpers replace HtmlHelper extension methods
+    - Namespace imports available to all views in the project
+*@
+@using OrbitAOS.V6
 @using OrbitAOS.V6.Models
+@using OrbitAOS.V6.Application.Common.Models
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers

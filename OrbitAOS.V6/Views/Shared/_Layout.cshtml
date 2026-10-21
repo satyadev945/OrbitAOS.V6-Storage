@@ -1,31 +1,50 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
+<!--
+  Views/Shared/_Layout.cshtml
+  Clean Architecture: Web Layer (Presentation) - Shared Layout
+  
+  Migration Notes:
+    - Updated for ASP.NET Core MVC .NET 7
+    - Uses Tag Helpers (asp-controller, asp-action, asp-area, asp-append-version)
+    - Replaces legacy @Html.ActionLink() with Tag Helper anchor elements
+    - Bootstrap 5 (replaces Bootstrap 3/4 from legacy MVC templates)
+    - asp-append-version="true" adds cache-busting hash to static file URLs
+    - @await RenderSectionAsync replaces legacy @RenderSection
+    - <partial name="_LoginPartial" /> replaces @Html.Partial("_LoginPartial")
+-->
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - ORBIT</title>
+    <title>@ViewData["Title"] - OrbitAOS</title>
+    <!-- Bootstrap 5 CSS - served from wwwroot/lib (replaces legacy /Content/bootstrap) -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <!-- Application CSS with cache-busting hash -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <!-- Scoped CSS for this layout -->
     <link rel="stylesheet" href="~/OrbitAOS.V6.styles.css" asp-append-version="true" />
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">OrbitAOS.V6</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <!-- Brand link using Tag Helpers (replaces @Html.ActionLink) -->
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">OrbitAOS</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between container">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
+                            <!-- Tag Helper anchor (replaces @Html.ActionLink("Home", "Index", "Home")) -->
                             <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
+                    <!-- Login partial using Tag Helper (replaces @Html.Partial("_LoginPartial")) -->
                     <partial name="_LoginPartial" />
                 </div>
             </div>
@@ -39,12 +58,16 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2024 - OrbitAOS.V6 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; @DateTime.Now.Year - OrbitAOS - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
+    <!-- JavaScript files from wwwroot/lib (replaces legacy /Scripts folder) -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Application JS with cache-busting hash -->
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <!-- Optional scripts section (replaces legacy @RenderSection("scripts", required: false)) -->
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

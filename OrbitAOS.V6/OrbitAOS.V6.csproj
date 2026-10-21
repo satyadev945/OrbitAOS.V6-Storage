@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <!-- Upgraded from net6.0 to net8.0 for .NET 8 LTS support -->
+    <!-- Targeting net8.0 for .NET 8 LTS support -->
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -18,14 +18,11 @@
        Web (this project): OrbitAOS.V6 (presentation layer)
        ============================================================ -->
   <ItemGroup>
-    <!-- PostgreSQL provider replacing Microsoft.EntityFrameworkCore.SqlServer -->
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.0" />
-    <!-- Npgsql EF Core provider for PostgreSQL 16 -->
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
-    <!-- EFCore naming conventions for snake_case support -->
-    <PackageReference Include="EFCore.NamingConventions" Version="8.0.0" />
+    <!-- SQL Server EF Core provider for MSSQL -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
     <!-- EF Core Relational for shared relational abstractions -->
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0">

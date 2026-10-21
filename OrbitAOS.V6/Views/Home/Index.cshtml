@@ -1,9 +1,16 @@
-﻿@{
+@model OrbitAOS.V6.Application.DTOs.HomeViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Welcome to OrbitAOS</h1>
+    <p class="lead">@Model.WelcomeMessage</p>
+    <p>
+        Learn about
+        <a href="https://docs.microsoft.com/aspnet/core" target="_blank" rel="noopener noreferrer">
+            building Web apps with ASP.NET Core on .NET 8
+        </a>.
+    </p>
+    <small class="text-muted">Page generated at @Model.GeneratedAt.ToString("yyyy-MM-dd HH:mm:ss") UTC</small>
 </div>
-

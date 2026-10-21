@@ -4,6 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>OrbitAOS.V6</RootNamespace>
     <UserSecretsId>aspnet-OrbitAOS.V6-afe03967-a771-44f8-b4ff-ee887e025b4f</UserSecretsId>
   </PropertyGroup>
 

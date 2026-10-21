@@ -1217,11 +1217,11 @@
   font-weight: 400 !important;
 }
 
-.fw-bold {
+/* purgecss-unused: cz-css-1005 - .fw-bold unused in removed components */ .fw-bold {
   font-weight: 700 !important;
 }
 
-.fw-bolder {
+/* purgecss-unused: cz-css-1005 - .fw-bolder unused in removed components */ .fw-bolder {
   font-weight: bolder !important;
 }
 

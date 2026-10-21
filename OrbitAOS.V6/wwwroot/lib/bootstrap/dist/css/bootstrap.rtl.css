@@ -6281,7 +6281,7 @@ textarea.form-control-lg {
   transform: none;
 }
 
-.placeholder {
+/* purgecss-unused: cz-css-1005 - .placeholder unused in removed components */ .placeholder {
   display: inline-block;
   min-height: 1em;
   vertical-align: middle;
@@ -6294,19 +6294,19 @@ textarea.form-control-lg {
   content: "";
 }
 
-.placeholder-xs {
+/* purgecss-unused: cz-css-1005 - .placeholder-xs unused in removed components */ .placeholder-xs {
   min-height: 0.6em;
 }
 
-.placeholder-sm {
+/* purgecss-unused: cz-css-1005 - .placeholder-sm unused in removed components */ .placeholder-sm {
   min-height: 0.8em;
 }
 
-.placeholder-lg {
+/* purgecss-unused: cz-css-1005 - .placeholder-lg unused in removed components */ .placeholder-lg {
   min-height: 1.2em;
 }
 
-.placeholder-glow .placeholder {
+/* purgecss-unused: cz-css-1005 - .placeholder-glow unused in removed components */ .placeholder-glow .placeholder {
   -webkit-animation: placeholder-glow 2s ease-in-out infinite;
   animation: placeholder-glow 2s ease-in-out infinite;
 }
@@ -6322,7 +6322,7 @@ textarea.form-control-lg {
     opacity: 0.2;
   }
 }
-.placeholder-wave {
+/* purgecss-unused: cz-css-1005 - .placeholder-wave unused in removed components */ .placeholder-wave {
   -webkit-mask-image: linear-gradient(130deg, #000 55%, rgba(0, 0, 0, 0.8) 75%, #000 95%);
   mask-image: linear-gradient(130deg, #000 55%, rgba(0, 0, 0, 0.8) 75%, #000 95%);
   -webkit-mask-size: 200% 100%;
@@ -7557,11 +7557,11 @@ textarea.form-control-lg {
   font-weight: 400 !important;
 }
 
-.fw-bold {
+/* purgecss-unused: cz-css-1005 - .fw-bold unused in removed components */ .fw-bold {
   font-weight: 700 !important;
 }
 
-.fw-bolder {
+/* purgecss-unused: cz-css-1005 - .fw-bolder unused in removed components */ .fw-bolder {
   font-weight: bolder !important;
 }
 

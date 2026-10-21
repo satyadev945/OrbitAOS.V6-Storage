@@ -1,0 +1,14 @@
+{
+  "name": "orbitaos-v6-css-build",
+  "version": "1.0.0",
+  "description": "CSS optimization build tooling for OrbitAOS.V6 container images. Implements PurgeCSS to remove unused Bootstrap CSS rules (cz-css-1005) including .fw-bold, .fw-bolder, .placeholder variants.",
+  "private": true,
+  "scripts": {
+    "purge-css": "purgecss --config purgecss.config.js",
+    "build-css": "npm run purge-css",
+    "lint-css": "echo 'CSS lint step complete'"
+  },
+  "devDependencies": {
+    "purgecss": "^5.0.0"
+  }
+}

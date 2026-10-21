@@ -2,11 +2,15 @@
 // Data/ApplicationDbContext.cs
 // Clean Architecture – Infrastructure / Data Layer
 //
-// Migration notes:
+// Migration notes (SQL Server → PostgreSQL):
 //   • Upgraded from EF Core 6.0.19 → EF Core 8.0.0
 //   • IdentityDbContext<IdentityUser> → IdentityDbContext<ApplicationUser>
 //     so the custom ApplicationUser entity is used throughout.
 //   • ApplicationUser is defined in Domain/Entities/ApplicationUser.cs
+//   • OnModelCreating: default schema set to "public" (PostgreSQL)
+//   • OnModelCreating: PostgreSQL uuid-ossp extension enabled
+//   • snake_case naming convention applied via UseSnakeCaseNamingConvention()
+//     in ServiceCollectionExtensions (Npgsql provider configuration)
 // ============================================================
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -41,6 +45,12 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
+
+        // Set default schema to "public" for PostgreSQL
+        builder.HasDefaultSchema("public");
+
+        // Enable PostgreSQL uuid-ossp extension for UUID generation
+        builder.HasPostgresExtension("uuid-ossp");
 
         // Apply all IEntityTypeConfiguration<T> classes found in this assembly
         builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);

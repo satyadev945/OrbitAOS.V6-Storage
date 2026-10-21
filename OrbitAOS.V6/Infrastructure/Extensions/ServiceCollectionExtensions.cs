@@ -3,11 +3,15 @@
 // Clean Architecture – Infrastructure Layer
 //
 // Registers all Infrastructure-layer services:
-//   • EF Core DbContext (SQL Server)
+//   • EF Core DbContext (PostgreSQL via Npgsql)
 //   • ASP.NET Core Identity
 //   • Generic repository / Unit-of-Work
 //
-// Called from Program.cs: builder.Services.AddInfrastructure(config)
+// Migration notes (SQL Server → PostgreSQL):
+//   • UseSqlServer() replaced with UseNpgsql()
+//   • EnableRetryOnFailure() uses Npgsql-compatible overload
+//   • AppContext.SetSwitch for legacy timestamp behaviour added
+//   • Called from Program.cs: builder.Services.AddInfrastructure(config)
 // ============================================================
 
 using Microsoft.AspNetCore.Identity;
@@ -27,7 +31,7 @@ namespace OrbitAOS.V6.Infrastructure.Extensions;
 public static class ServiceCollectionExtensions
 {
     /// <summary>
-    /// Registers EF Core, Identity, and repository implementations.
+    /// Registers EF Core (PostgreSQL), Identity, and repository implementations.
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection"/> to configure.</param>
     /// <param name="configuration">Application configuration (appsettings.json).</param>
@@ -37,25 +41,41 @@ public static class ServiceCollectionExtensions
         IConfiguration configuration)
     {
         // ----------------------------------------------------------
-        // 1. EF Core – SQL Server
-        //    Migration note: connection string stays in appsettings.json
-        //    (was web.config <connectionStrings> in legacy MVC)
+        // Enable legacy UTC timestamp behaviour for Npgsql.
+        // Required so that DateTime values stored without timezone
+        // information are treated as UTC (matches SQL Server behaviour).
+        // ----------------------------------------------------------
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
+        // ----------------------------------------------------------
+        // 1. EF Core – PostgreSQL (Npgsql)
+        //    Migration note: UseSqlServer → UseNpgsql
+        //    Connection string format changed to PostgreSQL DSN style
+        //    (see appsettings.json: Host=...;Port=5432;Database=...;...)
         // ----------------------------------------------------------
         var connectionString = configuration.GetConnectionString("DefaultConnection")
             ?? throw new InvalidOperationException(
                 "Connection string 'DefaultConnection' not found in appsettings.json.");
 
         services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(
+        {
+            options.UseNpgsql(
                 connectionString,
-                sqlOptions =>
+                npgsqlOptions =>
                 {
-                    // Retry on transient SQL Server failures (cloud-friendly)
-                    sqlOptions.EnableRetryOnFailure(
+                    // Retry on transient PostgreSQL failures (cloud-friendly)
+                    npgsqlOptions.EnableRetryOnFailure(
                         maxRetryCount: 5,
                         maxRetryDelay: TimeSpan.FromSeconds(30),
-                        errorNumbersToAdd: null);
-                }));
+                        errorCodesToAdd: null);
+
+                    // Store EF Core migration history in snake_case table
+                    npgsqlOptions.MigrationsHistoryTable("__ef_migrations_history", "public");
+                });
+
+            // Apply snake_case naming convention for all PostgreSQL objects
+            options.UseSnakeCaseNamingConvention();
+        });
 
         // ----------------------------------------------------------
         // 2. ASP.NET Core Identity

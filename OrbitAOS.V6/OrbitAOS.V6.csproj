@@ -18,11 +18,16 @@
        Web (this project): OrbitAOS.V6 (presentation layer)
        ============================================================ -->
   <ItemGroup>
-    <!-- All packages upgraded from 6.0.x to 8.0.x for .NET 8 compatibility -->
+    <!-- PostgreSQL provider replacing Microsoft.EntityFrameworkCore.SqlServer -->
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
+    <!-- Npgsql EF Core provider for PostgreSQL 16 -->
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
+    <!-- EFCore naming conventions for snake_case support -->
+    <PackageReference Include="EFCore.NamingConventions" Version="8.0.0" />
+    <!-- EF Core Relational for shared relational abstractions -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

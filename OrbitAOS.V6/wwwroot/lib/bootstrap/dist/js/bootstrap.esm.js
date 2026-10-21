@@ -282,11 +282,12 @@ const executeAfterTransition = (callback, transitionElement, waitForTransition =
   };
 
   transitionElement.addEventListener(TRANSITION_END, handler);
-  setTimeout(() => {
+  // SSR guard: only run setTimeout in browser environments to prevent AWS Lambda/SSR crashes
+  if (typeof window !== 'undefined') { const _ssrTimerId = setTimeout(() => {
     if (!called) {
       triggerTransitionEnd(transitionElement);
     }
-  }, emulatedDuration);
+  }, emulatedDuration); }
 };
 /**
  * Return the previous/next element of a list.

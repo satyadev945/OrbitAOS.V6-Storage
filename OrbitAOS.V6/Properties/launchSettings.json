@@ -1,9 +1,9 @@
-﻿{
+{
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:63593",
+      "applicationUrl": "${ASPNETCORE_URLS_IISEXPRESS:-http://localhost:63593}",
       "sslPort": 44342
     }
   },
@@ -12,16 +12,21 @@
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:7073;http://localhost:5008",
+      "applicationUrl": "${ASPNETCORE_URLS:-https://localhost:7073;http://localhost:5008}",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "${ASPNETCORE_ENVIRONMENT:-Development}",
+        "ASPNETCORE_URLS": "${ASPNETCORE_URLS:-https://localhost:7073;http://localhost:5008}",
+        "AWS_SSM_PARAMETER_STORE_ENABLED": "true",
+        "AWS_SECRETS_MANAGER_ENABLED": "true"
       }
     },
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "${ASPNETCORE_ENVIRONMENT:-Development}",
+        "AWS_SSM_PARAMETER_STORE_ENABLED": "true",
+        "AWS_SECRETS_MANAGER_ENABLED": "true"
       }
     }
   }

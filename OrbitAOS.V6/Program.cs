@@ -1,18 +1,40 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using OrbitAOS.V6.Data;
+using OrbitAOS.V6.Application;
+using OrbitAOS.V6.Application.Common;
+using OrbitAOS.V6.Application.Interfaces;
+using OrbitAOS.V6.Application.Services;
+using OrbitAOS.V6.Infrastructure;
+using OrbitAOS.V6.Filters;
+using OrbitAOS.V6.Middleware;
+using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
-builder.Services.AddControllersWithViews();
+// Infrastructure layer (Database, Identity, Repositories)
+builder.Services.AddInfrastructure(builder.Configuration);
+
+// Application layer (AutoMapper, FluentValidation, MediatR)
+builder.Services.AddApplication();
+
+// Application layer (Business logic, Services)
+builder.Services.AddScoped<ISampleService, SampleService>();
+
+// MVC Controllers with Views
+builder.Services.AddControllersWithViews(options =>
+{
+    // Add global exception filter
+    options.Filters.Add<GlobalExceptionFilter>();
+    // Add validation filter
+    options.Filters.Add<ValidationFilter>();
+})
+.AddFluentValidation();
+
+// Response compression
+builder.Services.AddResponseCompression();
+
+// Razor Pages (for Identity UI)
+builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
@@ -27,6 +49,12 @@ else
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+// Custom middleware
+app.UseRequestLogging();
+
+// Response compression
+app.UseResponseCompression();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

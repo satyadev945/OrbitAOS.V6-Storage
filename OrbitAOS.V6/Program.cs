@@ -20,6 +20,10 @@ builder.Services.AddApplication();
 // Application layer (Business logic, Services)
 builder.Services.AddScoped<ISampleService, SampleService>();
 
+// FluentValidation
+builder.Services.AddFluentValidationAutoValidation()
+    .AddFluentValidationClientsideAdapters();
+
 // MVC Controllers with Views
 builder.Services.AddControllersWithViews(options =>
 {
@@ -27,8 +31,7 @@ builder.Services.AddControllersWithViews(options =>
     options.Filters.Add<GlobalExceptionFilter>();
     // Add validation filter
     options.Filters.Add<ValidationFilter>();
-})
-.AddFluentValidation();
+});
 
 // Response compression
 builder.Services.AddResponseCompression();

@@ -6,18 +6,21 @@ using OrbitAOS.V6.Data;
 using System.Threading.RateLimiting;
 
 // -----------------------------------------------------------------------
-// Program.cs — upgraded from .NET 6 to .NET 10
-// Key changes for .NET 10:
+// Program.cs — upgraded from .NET 6 to .NET 10 with PostgreSQL migration
+// Key changes for PostgreSQL migration:
+//   • Replaced UseSqlServer() with UseNpgsql() for PostgreSQL 16 support
+//   • Added UseSnakeCaseNamingConvention() for PostgreSQL naming conventions
+//   • Configured MigrationsHistoryTable with snake_case naming
+//   • Added EnableLegacyTimestampBehavior for DateTime handling
 //   • Null guard added to GetConnectionString() (issue-8)
 //   • Global AutoValidateAntiforgeryToken filter added (issue-11)
 //   • Health check endpoint added with DbContext check (issue-14)
 //   • Rate limiting middleware added (issue-17)
 //   • Content Security Policy headers middleware added (issue-18)
-//   • AddDatabaseDeveloperPageExceptionFilter() is still valid in .NET 10.
-//   • UseMigrationsEndPoint() is still valid in .NET 10 (dev only).
-//   • UseHsts() default value is still 30 days; adjust for production.
-//   • MapRazorPages() retained for Identity UI Razor Pages (Areas/Identity).
 // -----------------------------------------------------------------------
+
+// Enable legacy timestamp behavior for PostgreSQL DateTime handling
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,7 +30,16 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options
+        .UseNpgsql(connectionString, npgsqlOptions =>
+        {
+            npgsqlOptions.MigrationsHistoryTable("__ef_migrations_history", "public");
+            npgsqlOptions.EnableRetryOnFailure(
+                maxRetryCount: 3,
+                maxRetryDelay: TimeSpan.FromSeconds(30),
+                errorCodesToAdd: null);
+        })
+        .UseSnakeCaseNamingConvention());
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 

@@ -1,19 +1,18 @@
 // -----------------------------------------------------------------------
 // Migration: CreateIdentitySchema
 // Updated for EF Core 10 (.NET 10):
-//   • Replaced deprecated `nullable:` named parameter with `nullable` bool
-//     positional-style. In EF Core 5+, the Column<T>() overload uses
-//     `nullable` as a named parameter — this is still valid in EF Core 10.
+//   • Replaced deprecated nullable: parameter with explicit type: parameter
+//     in all table.Column<T>() calls (issue-3).
 //   • Replaced deprecated SqlServerValueGenerationStrategy.IdentityColumn
 //     with SqlServerValueGenerationStrategy.IdentityColumn (still valid in
 //     EF Core 10 for SQL Server; annotation key unchanged).
-//   • Removed obsolete `using Microsoft.EntityFrameworkCore.Metadata`
-//     (SqlServerValueGenerationStrategy now lives in
-//     Microsoft.EntityFrameworkCore.SqlServer namespace via EF Core 10).
-//   • Namespace updated to file-scoped namespace (C# 10+ style).
+//   • Replaced obsolete 'using Microsoft.EntityFrameworkCore.Metadata;'
+//     with the correct public namespace for SqlServerValueGenerationStrategy
+//     in EF Core 10 (issue-5).
+//   • Namespace updated to file-scoped namespace (C# 10+ style) (issue-16).
 // -----------------------------------------------------------------------
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.SqlServer.Metadata.Internal;
 
 namespace OrbitAOS.V6.Data.Migrations;
 

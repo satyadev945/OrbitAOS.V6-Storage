@@ -1,11 +1,18 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using OrbitAOS.V6.Data;
+using System.Threading.RateLimiting;
 
 // -----------------------------------------------------------------------
 // Program.cs — upgraded from .NET 6 to .NET 10
 // Key changes for .NET 10:
-//   • No breaking API changes in the minimal-hosting model for this scope.
+//   • Null guard added to GetConnectionString() (issue-8)
+//   • Global AutoValidateAntiforgeryToken filter added (issue-11)
+//   • Health check endpoint added with DbContext check (issue-14)
+//   • Rate limiting middleware added (issue-17)
+//   • Content Security Policy headers middleware added (issue-18)
 //   • AddDatabaseDeveloperPageExceptionFilter() is still valid in .NET 10.
 //   • UseMigrationsEndPoint() is still valid in .NET 10 (dev only).
 //   • UseHsts() default value is still 30 days; adjust for production.
@@ -15,6 +22,7 @@ using OrbitAOS.V6.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // --- Data / EF Core ---
+// Null guard added: throws a clear error if connection string is missing (issue-8)
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
@@ -28,8 +36,29 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
     options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
-// --- MVC ---
-builder.Services.AddControllersWithViews();
+// --- MVC with global AutoValidateAntiforgeryToken filter (issue-11) ---
+builder.Services.AddControllersWithViews(options =>
+{
+    // Global CSRF protection: all POST/PUT/DELETE actions require a valid antiforgery token
+    options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+});
+
+// --- Health Checks (issue-14) ---
+builder.Services.AddHealthChecks()
+    .AddDbContextCheck<ApplicationDbContext>();
+
+// --- Rate Limiting (issue-17) ---
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddFixedWindowLimiter("fixed", limiterOptions =>
+    {
+        limiterOptions.PermitLimit = 100;
+        limiterOptions.Window = TimeSpan.FromMinutes(1);
+        limiterOptions.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        limiterOptions.QueueLimit = 10;
+    });
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+});
 
 var app = builder.Build();
 
@@ -45,13 +74,28 @@ else
     app.UseHsts();
 }
 
+// --- Content Security Policy headers middleware (issue-18) ---
+app.Use(async (context, next) =>
+{
+    context.Response.Headers.Append(
+        "Content-Security-Policy",
+        "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self';");
+    await next();
+});
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 
+// --- Rate Limiting middleware (issue-17) ---
+app.UseRateLimiter();
+
 app.UseAuthentication();
 app.UseAuthorization();
+
+// --- Health Check endpoint (issue-14) ---
+app.MapHealthChecks("/health");
 
 // --- Routing ---
 app.MapControllerRoute(

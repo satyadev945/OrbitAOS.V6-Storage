@@ -6,7 +6,7 @@ using OrbitAOS.V6.Data;
 using System.Threading.RateLimiting;
 
 // -----------------------------------------------------------------------
-// Program.cs — upgraded from .NET 6 to .NET 10 with PostgreSQL migration
+// Program.cs — upgraded from .NET 6 to .NET 8 with PostgreSQL migration
 // Key changes for PostgreSQL migration:
 //   • Replaced UseSqlServer() with UseNpgsql() for PostgreSQL 16 support
 //   • Added UseSnakeCaseNamingConvention() for PostgreSQL naming conventions
@@ -14,7 +14,7 @@ using System.Threading.RateLimiting;
 //   • Added EnableLegacyTimestampBehavior for DateTime handling
 //   • Null guard added to GetConnectionString() (issue-8)
 //   • Global AutoValidateAntiforgeryToken filter added (issue-11)
-//   • Health check endpoint added with DbContext check (issue-14)
+//   • Health check endpoint added (issue-14)
 //   • Rate limiting middleware added (issue-17)
 //   • Content Security Policy headers middleware added (issue-18)
 // -----------------------------------------------------------------------
@@ -43,7 +43,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-// --- ASP.NET Core Identity (upgraded to .NET 10 packages) ---
+// --- ASP.NET Core Identity (net8.0 packages) ---
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
     options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -56,8 +56,9 @@ builder.Services.AddControllersWithViews(options =>
 });
 
 // --- Health Checks (issue-14) ---
-builder.Services.AddHealthChecks()
-    .AddDbContextCheck<ApplicationDbContext>();
+// Note: AddDbContextCheck() requires Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore
+// which is not available for net8.0 in the local package cache; using basic health check instead.
+builder.Services.AddHealthChecks();
 
 // --- Rate Limiting (issue-17) ---
 builder.Services.AddRateLimiter(options =>

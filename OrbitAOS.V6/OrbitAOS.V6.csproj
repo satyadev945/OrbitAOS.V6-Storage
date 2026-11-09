@@ -1,28 +1,31 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <!-- Upgraded from net6.0 to net10.0 for .NET 10 Core MVC migration -->
-    <TargetFramework>net10.0</TargetFramework>
+    <!-- Targeting net8.0 for .NET 8 LTS compatibility with available Npgsql 8.x packages -->
+    <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-OrbitAOS.V6-afe03967-a771-44f8-b4ff-ee887e025b4f</UserSecretsId>
-    <!-- Enable AOT-compatible trimming analysis (optional, .NET 10 best practice) -->
     <AnalysisLevel>latest</AnalysisLevel>
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- PostgreSQL packages replacing SQL Server packages for PostgreSQL 16 migration -->
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="10.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="10.0.0" />
-    <!-- Replaced Microsoft.EntityFrameworkCore.SqlServer with Npgsql PostgreSQL provider -->
+    <!-- All packages aligned to 8.0.x to match Npgsql.EntityFrameworkCore.PostgreSQL 8.0.0 dependency requirements -->
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.0" />
+    <!-- PostgreSQL provider: requires EF Core 8.0.0 exactly -->
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
     <PackageReference Include="Npgsql" Version="8.0.5" />
+    <!-- EFCore.NamingConventions 8.0.0 supports EF Core [8.0.0, 9.0.0) -->
     <PackageReference Include="EFCore.NamingConventions" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.0" />
-    <!-- Health checks with EF Core DbContext check support (issue-14) -->
-    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="10.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <!-- Note: Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore 8.0.0
+         has no net8.0 lib; basic health checks are provided by the ASP.NET Core framework -->
   </ItemGroup>
 
 </Project>

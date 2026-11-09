@@ -6,7 +6,7 @@
 //   • Replaced 'using Microsoft.EntityFrameworkCore.Metadata' (SqlServer)
 //     with 'using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata'
 //   • Removed SQL Server-specific HasFilter() with IS NOT NULL syntax
-//   • ProductVersion annotation updated to "10.0.0"
+//   • ProductVersion annotation updated to "8.0.0"
 //   • Relational:MaxIdentifierLength updated from 128 (SQL Server) to 63 (PostgreSQL)
 //   • Namespace converted to file-scoped namespace (C# 10+ style) (issue-16)
 //   • HasMaxLength() calls retained (still valid in EF Core 10)
@@ -25,7 +25,7 @@ partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
 #pragma warning disable 612, 618
         modelBuilder
-            .HasAnnotation("ProductVersion", "10.0.0")
+            .HasAnnotation("ProductVersion", "8.0.0")
             .HasAnnotation("Relational:MaxIdentifierLength", 63)
             .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
